@@ -859,9 +859,13 @@ export class OpsApp implements OpsApi {
   async getQueueGroup(input: { queueName: string; groupId: string }): Promise<GroupInfo> {
     const group = await this.#dependencies.ops.findQueueGroup(input);
     if (!group) {
-      throw new NotFoundError("not_found", "Queue group", input.groupId, {
-        meta: { queueName: input.queueName },
-      });
+      throw new NotFoundError(
+        "not_found",
+        { resource: "Queue group", id: input.groupId },
+        {
+          meta: { queueName: input.queueName },
+        },
+      );
     }
     return group;
   }
@@ -879,7 +883,7 @@ export class OpsApp implements OpsApi {
   }): Promise<ProjectionStateAtEvent> {
     const state = await this.#dependencies.ops.eventExplorer.computeProjectionState(input);
     if (!state.aggregateType) {
-      throw new NotFoundError("not_found", "Projection", input.projectionName);
+      throw new NotFoundError("not_found", { resource: "Projection", id: input.projectionName });
     }
     return state;
   }
@@ -1571,7 +1575,7 @@ export class OpsApp implements OpsApi {
 
     const report = await this.#dependencies.inbox.findById({ id: input.id });
 
-    if (!report) throw new NotFoundError("not_found", "Report", input.id);
+    if (!report) throw new NotFoundError("not_found", { resource: "Report", id: input.id });
 
     return report;
   }

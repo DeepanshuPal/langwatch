@@ -1034,7 +1034,11 @@ export class ScimSyncNotFoundError extends NotFoundError {
   declare readonly code: "scim_sync_not_found";
 
   constructor(scimSyncId: string) {
-    super("scim_sync_not_found", "SCIM sync", scimSyncId, { meta: { scimSyncId } });
+    super(
+      "scim_sync_not_found",
+      { resource: "SCIM sync", id: scimSyncId },
+      { meta: { scimSyncId } },
+    );
     this.name = "ScimSyncNotFoundError";
   }
 }
