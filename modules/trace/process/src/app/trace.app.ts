@@ -165,6 +165,7 @@ import {
   type TraceMetadataUpdate,
   type TracePreconditionSampleInput,
 } from "@langwatch/trace-contract";
+import type { ConversationView } from "@langwatch/trace-contract/conversation";
 import type { z } from "zod";
 
 import { tokenCounterChannels } from "../channels/token-counter-channels.registry.ts";
@@ -957,6 +958,7 @@ export class TraceApp implements TraceApi, CollectorApp {
   async renderThreadTranscript(input: {
     threadKey: string;
     traces: readonly Trace[];
+    view: ConversationView;
     maxTokens?: number;
   }): Promise<string> {
     // The text alone: the renderer writes its own omitted-turn marker into the
