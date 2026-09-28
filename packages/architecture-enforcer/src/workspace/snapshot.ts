@@ -43,8 +43,17 @@ const APPLICATION_PACKAGES: readonly {
  */
 const STANDALONE_PROGRAMS = new Set(["scenario-child"]);
 
-/** The internal consoles: React bundles a Go process serves, one `apps/<name>-web` each (ADR-160). */
+/** The internal consoles, React bundles a Go process serves: `apps/<name>-web` (ADR-160). */
 const INTERNAL_CONSOLE_SUFFIX = "-web";
+
+/** A directory under apps/ this layout expects: a composition root, a program or a console. */
+function isKnownApplicationDirectory(directory: string): boolean {
+  return (
+    APPLICATION_PACKAGES.some(({ path }) => path === directory) ||
+    STANDALONE_PROGRAMS.has(directory) ||
+    directory.endsWith(INTERNAL_CONSOLE_SUFFIX)
+  );
+}
 
 const ENTERPRISE_COMPOSITION_PACKAGES: readonly {
   role: EnterpriseCompositionRole;
@@ -231,9 +240,7 @@ function discoverApplications(discovery: Discovery): void {
   const applicationsRoot = join(root, "apps");
 
   for (const directory of directories(applicationsRoot)) {
-    if (APPLICATION_PACKAGES.some(({ path }) => path === directory)) continue;
-    if (STANDALONE_PROGRAMS.has(directory)) continue;
-    if (directory.endsWith(INTERNAL_CONSOLE_SUFFIX)) continue;
+    if (isKnownApplicationDirectory(directory)) continue;
 
     const unexpectedManifest = join(applicationsRoot, directory, "package.json");
     if (!existsSync(unexpectedManifest) || directory === "shared") continue;
