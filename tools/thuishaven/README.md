@@ -480,13 +480,13 @@ reclaim, `DestroyStack`) takes it away. A slug that spells a machine-wide name
 
 The daemon's JSON, which the console reads:
 
-| Route                               | What                                                  |
-| ----------------------------------- | ----------------------------------------------------- |
-| `GET /api/hub`                      | the machine: memory, stacks, idle worktrees, reaping  |
-| `GET /api/stacks/<slug>`            | one stack home; 404 with a hub link for unknown slugs |
-| `POST /api/stacks/<slug>/api-key`   | reveals the local API key (same-origin only)          |
-| `POST /api/stacks/<slug>/restart`   | bounces a live stack                                  |
-| `POST /api/worktrees/start`         | brings a stopped worktree up                          |
+| Route                             | What                                                  |
+| --------------------------------- | ----------------------------------------------------- |
+| `GET /api/hub`                    | the machine: memory, stacks, idle worktrees, reaping  |
+| `GET /api/stacks/<slug>`          | one stack home; 404 with a hub link for unknown slugs |
+| `POST /api/stacks/<slug>/api-key` | reveals the local API key (same-origin only)          |
+| `POST /api/stacks/<slug>/restart` | bounces a live stack                                  |
+| `POST /api/worktrees/start`       | brings a stopped worktree up                          |
 
 ## More of what haven does
 
