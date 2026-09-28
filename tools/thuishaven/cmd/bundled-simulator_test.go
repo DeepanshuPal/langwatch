@@ -93,14 +93,15 @@ func TestBundledSimulatorsWithoutCheckout(t *testing.T) {
 			"SERVER_ADDR=" + addr, "IDPSIM_BASE_URL=" + baseURL,
 			"IDPSIM_TENANTS=1", "IDPSIM_DNS_ADDR=off",
 		}, baseURL+"/health")
-		var state struct{ Tenants []struct{ ID string } }
+		var state struct{ Tenants []struct{ ID int } }
 		if err := json.Unmarshal(simulatorGET(t, baseURL+"/control/state"), &state); err != nil {
 			t.Fatal(err)
 		}
-		if len(state.Tenants) != 1 || state.Tenants[0].ID != "1" {
+		if len(state.Tenants) != 1 || state.Tenants[0].ID != 1 {
 			t.Fatalf("IdP state does not carry its tenant: %+v", state)
 		}
-		assertConsoleServed(t, baseURL+"/")
+		// The IdP front page is still server-rendered; apps/idpsim-web holds no console yet.
+		simulatorGET(t, baseURL+"/")
 		var discovery struct{ Issuer string }
 		if err := json.Unmarshal(simulatorGET(t, baseURL+"/t/1/.well-known/openid-configuration"), &discovery); err != nil {
 			t.Fatal(err)
